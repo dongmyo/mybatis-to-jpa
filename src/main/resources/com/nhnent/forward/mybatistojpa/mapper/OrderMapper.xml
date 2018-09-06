@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nhnent.forward.mybatistojpa.mapper.OrderMapper">
+    <sql id="orderFields">
+          order_id,
+          order_date
+    </sql>
+
+    <select id="getOrder" resultType="Order">
+        select
+          <include refid="orderFields" />
+        from order
+        where order_id = #{value}
+    </select>
+
+    <select id="getOrderCount" resultType="int">
+        select
+          count(*) as cnt
+        from order;
+    </select>
+
+    <select id="getOrders" resultType="Order">
+        select
+          <include refid="orderFields" />
+        from order
+        order by order_date desc
+        limit #{offset}, #{limit}
+    </select>
+</mapper>
