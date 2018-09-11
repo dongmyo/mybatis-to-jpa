@@ -11,7 +11,7 @@ public class OrderItem {
     @JsonSerialize(using = ToStringSerializer.class)
     private Long orderId;
 
-    private Integer limeNumber;
+    private Integer lineNumber;
 
     @JsonSerialize(using = ToStringSerializer.class)
     private Long itemId;
