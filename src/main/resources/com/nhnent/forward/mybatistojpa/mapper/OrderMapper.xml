@@ -9,20 +9,20 @@
     <select id="getOrder" resultType="Order">
         select
           <include refid="orderFields" />
-        from order
+        from Orders
         where order_id = #{value}
     </select>
 
     <select id="getOrderCount" resultType="int">
         select
           count(*) as cnt
-        from order;
+        from Orders;
     </select>
 
     <select id="getOrders" resultType="Order">
         select
           <include refid="orderFields" />
-        from order
+        from Orders
         order by order_date desc
         limit #{offset}, #{limit}
     </select>

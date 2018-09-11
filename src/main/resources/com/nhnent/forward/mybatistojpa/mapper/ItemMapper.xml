@@ -10,20 +10,20 @@
     <select id="getItem" resultType="Item">
         select
           <include refid="itemFields" />
-        from `item`
+        from `Items`
         where `item_id` = #{value}
     </select>
 
     <select id="getItemCount" resultType="int">
         select
           count(*) as cnt
-        from `item`;
+        from `Items`;
     </select>
 
     <select id="getItems" resultType="Item">
         select
           <include refid="itemFields" />
-        from `item`
+        from `Items`
         order by `item_id` asc
         limit #{offset}, #{limit}
     </select>
