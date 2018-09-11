@@ -1,32 +1,25 @@
 package com.nhnent.forward.mybatistojpa.service;
 
-import com.nhnent.forward.mybatistojpa.mapper.ItemMapper;
-import com.nhnent.forward.mybatistojpa.model.Item;
+import com.nhnent.forward.mybatistojpa.entity.Item;
+import com.nhnent.forward.mybatistojpa.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class ItemService {
     @Autowired
-    private ItemMapper itemMapper;
+    private ItemRepository itemRepository;
 
-    public List<Item> getItems(int pageNumber, int pageSize) {
-        int totalCount = itemMapper.getItemCount();
 
-        int pageOffset = (pageNumber - 1) * pageSize;
-        if (pageOffset >= totalCount) {
-            return Collections.emptyList();
-        }
-
-        return itemMapper.getItems(pageOffset, pageSize);
+    public Page<Item> getItems(Pageable pageable) {
+        return itemRepository.findAll(pageable);
     }
 
     public Item getItem(Long itemId) {
-        return itemMapper.getItem(itemId);
+        return itemRepository.findOne(itemId);
     }
 
     @Transactional

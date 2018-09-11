@@ -1,37 +1,28 @@
 package com.nhnent.forward.mybatistojpa.service;
 
-import com.nhnent.forward.mybatistojpa.mapper.OrderItemMapper;
-import com.nhnent.forward.mybatistojpa.mapper.OrderMapper;
-import com.nhnent.forward.mybatistojpa.model.Order;
+import com.nhnent.forward.mybatistojpa.entity.Order;
+import com.nhnent.forward.mybatistojpa.repository.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collections;
-import java.util.List;
 
 @Service
 public class OrderService {
     @Autowired
-    private OrderMapper orderMapper;
+    private OrderRepository orderRepository;
 
     @Autowired
     private OrderItemMapper orderItemMapper;
 
 
-    public List<Order> getOrders(int pageNumber, int pageSize) {
-        int totalCount = orderMapper.getOrderCount();
-
-        int pageOffset = (pageNumber - 1) * pageSize;
-        if (pageOffset >= totalCount) {
-            return Collections.emptyList();
-        }
-
-        return orderMapper.getOrders(pageOffset, pageSize);
+    public Page<Order> getOrders(Pageable pageable) {
+        return orderRepository.findAll(pageable);
     }
 
     public Order getOrder(Long orderId) {
-        return orderMapper.getOrder(orderId);
+        return orderRepository.findOne(orderId);
     }
 
     @Transactional
