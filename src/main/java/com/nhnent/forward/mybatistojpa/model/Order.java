@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,5 +17,7 @@ public class Order {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, timezone = "GMT+09:00")
     private Date orderDate;
+
+    private List<OrderItem> orderItems;
 
 }

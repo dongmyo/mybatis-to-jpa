@@ -13,9 +13,8 @@ public class OrderItem {
 
     private Integer lineNumber;
 
-    @JsonSerialize(using = ToStringSerializer.class)
-    private Long itemId;
-
     private Integer quantity;
+
+    private Item item;
 
 }
