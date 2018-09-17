@@ -20,7 +20,7 @@ public class Order {
     private Date orderDate;
 
     @OneToMany
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
     List<OrderItem> orderItems;
 
 }
