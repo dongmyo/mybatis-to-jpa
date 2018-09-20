@@ -3,11 +3,33 @@
 <mapper namespace="com.nhnent.forward.mybatistojpa.mapper.OrderItemMapper">
     <select id="getOrderItemsByOrderId" resultType="OrderItem">
         select
-          order_id,
-          item_id,
-          quantity
-        from OrderItems
-        where order_id = #{value}
+          `order_id`,
+          `item_id`,
+          `quantity`
+        from `OrderItems`
+        where `order_id` = #{value}
     </select>
+
+    <insert id="insertOrderItem" parameterType="OrderItem">
+        insert into `OrderItems`
+        (
+          `order_id`,
+          `line_number`,
+          `item_id`,
+          `quantity`
+        )
+        values
+        (
+          #{orderId},
+          #{lineNumber},
+          #{item.itemId},
+          #{quantity}
+        )
+    </insert>
+
+    <delete id="deleteOrderItem">
+        delete from `OrderItems`
+        where `order_id` = #{value}
+    </delete>
 
 </mapper>

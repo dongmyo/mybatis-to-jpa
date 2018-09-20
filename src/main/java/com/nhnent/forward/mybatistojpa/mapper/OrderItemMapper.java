@@ -7,4 +7,8 @@ import java.util.List;
 public interface OrderItemMapper {
     List<OrderItem> getOrderItemsByOrderId(Long orderId);
 
+    int insertOrderItem(OrderItem orderItem);
+
+    int deleteOrderItem(Long orderId);
+
 }
