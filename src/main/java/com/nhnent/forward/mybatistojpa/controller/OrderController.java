@@ -1,17 +1,18 @@
 package com.nhnent.forward.mybatistojpa.controller;
 
-import com.nhnent.forward.mybatistojpa.entity.Order;
+import com.nhnent.forward.mybatistojpa.model.Order;
 import com.nhnent.forward.mybatistojpa.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -21,7 +22,7 @@ public class OrderController {
 
 
     @GetMapping("")
-    public Page<Order> getOrders(Pageable pageable) {
+    public List<Order> getOrders(Pageable pageable) {
         return orderService.getOrders(pageable);
     }
 
@@ -31,8 +32,8 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public Order createOrder(@RequestBody Order order) {
-        return orderService.createOrder(order);
+    public Order createOrder(@RequestBody Order orderDto) {
+        return orderService.createOrder(orderDto);
     }
 
     @DeleteMapping("/{orderId}")

@@ -1,5 +1,6 @@
 package com.nhnent.forward.mybatistojpa.entity;
 
+import com.nhnent.forward.mybatistojpa.model.OrderItem;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,24 +11,43 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 import java.io.Serializable;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "OrderItems")
-public class OrderItem {
+public class OrderItemEntity {
     @EmbeddedId
-    private Pk pk;
+    private Pk pk = new Pk();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @MapsId("orderId")
+    @JoinColumn(name = "order_id")
+    private OrderEntity order;
 
     @ManyToOne
     @JoinColumn(name = "item_id")
-    private Item item;
+    private ItemEntity item;
 
     @Column
     private Integer quantity;
+
+
+    public OrderItem toOrderItemDto() {
+        OrderItem orderItemDto = new OrderItem();
+        orderItemDto.setOrderId(this.pk.getOrderId());
+        orderItemDto.setLineNumber(this.pk.getLineNumber());
+        orderItemDto.setQuantity(this.quantity);
+        orderItemDto.setItem(this.item.toItemDto());
+
+        return orderItemDto;
+    }
 
 
     /*

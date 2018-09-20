@@ -1,6 +1,8 @@
 package com.nhnent.forward.mybatistojpa.entity;
 
+import com.nhnent.forward.mybatistojpa.model.Item;
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,9 +12,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "Items")
-public class Item {
+public class ItemEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "item_id")
@@ -22,5 +25,15 @@ public class Item {
     private String itemName;
 
     private Long price;
+
+
+    public Item toItemDto() {
+        Item itemDto = new Item();
+        itemDto.setItemId(this.itemId);
+        itemDto.setItemName(this.itemName);
+        itemDto.setPrice(this.price);
+
+        return itemDto;
+    }
 
 }
