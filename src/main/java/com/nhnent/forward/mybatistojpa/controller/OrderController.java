@@ -32,8 +32,8 @@ public class OrderController {
     }
 
     @PostMapping("")
-    public Order createOrder(@RequestBody Order orderDto) {
-        return orderService.createOrder(orderDto);
+    public Order createOrder(@RequestBody Order order) {
+        return orderService.createOrder(order);
     }
 
     @DeleteMapping("/{orderId}")
