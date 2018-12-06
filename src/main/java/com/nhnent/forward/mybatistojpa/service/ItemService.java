@@ -1,57 +1,66 @@
 package com.nhnent.forward.mybatistojpa.service;
 
-import com.nhnent.forward.mybatistojpa.mapper.ItemMapper;
+import com.nhnent.forward.mybatistojpa.entity.ItemEntity;
 import com.nhnent.forward.mybatistojpa.model.Item;
+import com.nhnent.forward.mybatistojpa.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ItemService {
     @Autowired
-    private ItemMapper itemMapper;
+    private ItemRepository itemRepository;
 
-    public List<Item> getItems(int pageNumber, int pageSize) {
-        int totalCount = itemMapper.getItemCount();
 
-        int pageOffset = (pageNumber - 1) * pageSize;
-        if (pageOffset >= totalCount) {
-            return Collections.emptyList();
-        }
+    public List<Item> getItems(Pageable pageable) {
+        Page<ItemEntity> itemPage = itemRepository.findAll(pageable);
 
-        return itemMapper.getItems(pageOffset, pageSize);
+        return itemPage.getContent()
+                       .stream()
+                       .map(ItemEntity::toItemDto)
+                       .collect(Collectors.toList());
     }
 
     public Item getItem(Long itemId) {
-        return itemMapper.getItem(itemId);
+        return Optional.ofNullable(itemRepository.findOne(itemId))
+                       .map(ItemEntity::toItemDto)
+                       .orElse(null);
     }
 
     @Transactional
     public Item createItem(Item item) {
-        int count = itemMapper.insertItem(item);
-        if (count != 1) {
-            throw new RuntimeException("can't create item");
-        }
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setItemName(item.getItemName());
+        itemEntity.setPrice(item.getPrice());
 
-        return item;
+        ItemEntity newItem = itemRepository.save(itemEntity);
+
+        return newItem.toItemDto();
     }
 
     @Transactional
     public Item updateItem(Item item) {
-        int count = itemMapper.updateItem(item);
-        if (count != 1) {
-            throw new RuntimeException("can't update item");
-        }
+        ItemEntity itemEntity = new ItemEntity();
+        itemEntity.setItemId(item.getItemId());
+        itemEntity.setItemName(item.getItemName());
+        itemEntity.setPrice(item.getPrice());
 
-        return getItem(item.getItemId());
+        ItemEntity newItemEntity = itemRepository.save(itemEntity);
+
+        return newItemEntity.toItemDto();
     }
 
     @Transactional
     public boolean deleteItem(Long itemId) {
-        return (itemMapper.deleteItem(itemId) == 1);
+        itemRepository.delete(itemId);
+        return true;
     }
 
 }
